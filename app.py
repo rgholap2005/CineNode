@@ -117,7 +117,8 @@ def fetch_advanced_details(movie_id):
 def recommend(movie):
     movie_idx = movies[movies['title'] == movie].index[0]
     distances = similarity[movie_idx]
-    movies_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x: x[1])[1:6]
+    # Expand to 15 recommendations
+    movies_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x: x[1])[1:16] 
     
     recs = []
     for i in movies_list:
@@ -204,7 +205,20 @@ elif app_mode == "Visual DNA Clusters":
         cluster_movies = movies[movies['cluster'] == selected_cluster].head(10)
         st.markdown("<hr style='border-color: rgba(255,255,255,0.1);'>", unsafe_allow_html=True)
         
+        st.markdown("<h3 style='margin-bottom: 20px;'>Matches your Aesthetic Criteria</h3>", unsafe_allow_html=True)
+    recs = recommend(st.session_state.main_movie)
+    
+    # Renders 15 movies across 3 dynamic rows
+    for i in range(0, 15, 5):
         cols = st.columns(5)
+        for j in range(5):
+            if i + j < len(recs):
+                with cols[j]:
+                    st.image(recs[i+j]['poster'], use_column_width=True)
+                    if st.button(f"Analyze {recs[i+j]['title']}", key=f"btn_{i+j}"):
+                        set_movie(recs[i+j]['title'])
+                        st.rerun()
+        st.write("") # Adds clean vertical spacing between rows
         for idx in range(10):
             if idx < len(cluster_movies):
                 col = cols[idx % 5]
