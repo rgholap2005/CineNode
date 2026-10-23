@@ -209,14 +209,16 @@ elif app_mode == "Visual DNA Clusters":
     recs = recommend(st.session_state.main_movie)
     
     # Renders 15 movies across 3 dynamic rows
+    # Render cluster grid
     for i in range(0, 15, 5):
         cols = st.columns(5)
         for j in range(5):
-            if i + j < len(recs):
+            idx = i + j  # Define the index variable here
+            if idx < len(cluster_movies):
                 with cols[j]:
-                    st.image(recs[i+j]['poster'], use_column_width=True)
-                    if st.button(f"Analyze {recs[i+j]['title']}", key=f"btn_{i+j}"):
-                        set_movie(recs[i+j]['title'])
+                    st.image(cluster_movies[idx]['poster'], use_column_width=True)
+                    if st.button(f"Analyze {cluster_movies[idx]['title']}", key=f"cluster_btn_{idx}"):
+                        set_movie(cluster_movies[idx]['title'])
                         st.rerun()
         st.write("") # Adds clean vertical spacing between rows
         for idx in range(10):
