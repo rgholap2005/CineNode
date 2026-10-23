@@ -156,6 +156,7 @@ if app_mode == "Intelligence Engine":
     tagline_html = f"<p class='movie-tagline'>\"{details['tagline']}\"</p>" if details['tagline'] else ""
     
     # Render Hero Interface
+    # Render Hero Interface
     st.markdown(f"""
 <div class="hero-container">
     <div class="hero-bg" style="background-image: url('{details['backdrop']}');"></div>
@@ -165,43 +166,32 @@ if app_mode == "Intelligence Engine":
             <h1 class="movie-title">{st.session_state.main_movie}</h1>
             {tagline_html}
             <div class="movie-meta">
-                <span>⭐ {details['rating']} / 10</span> <span>•</span> <span>⏱ {details['runtime']} mins</span>
+                <span>{details['rating']} / 10</span> <span>•</span> <span>{details['runtime']} mins</span>
             </div>
             <div class="btn-group">
-                <a href="https://www.themoviedb.org/movie/{movie_row.id}" target="_blank" class="btn-link btn-primary">▶ Watch Trailer</a>
-                <a href="https://letterboxd.com/search/{st.session_state.main_movie.replace(' ', '+')}/" target="_blank" class="btn-link btn-secondary">📝 Community Reviews</a>
+                <a href="https://www.themoviedb.org/movie/{movie_row.id}" target="_blank" class="btn-link btn-primary">Watch Trailer</a>
+                <a href="https://letterboxd.com/search/{st.session_state.main_movie.replace(' ', '+')}/" target="_blank" class="btn-link btn-secondary">Community Reviews</a>
             </div>
             <div class="tags-container">{tags_html}</div>
             <p class="movie-plot">{details['overview']}</p>
             <div class="analytics-grid">
                 <div class="stat-card">
                     <div class="stat-title">Visual Profile</div>
-                    <div class="stat-value">🎨 {vibe}</div>
+                    <div class="stat-value">{vibe}</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-title">Rhythm & Pacing</div>
-                    <div class="stat-value">⏱️ {pacing}</div>
+                    <div class="stat-value">{pacing}</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-title">Core Tropes</div>
-                    <div class="stat-value">🎭 {tropes_str}</div>
+                    <div class="stat-value">{tropes_str}</div>
                 </div>
             </div>
         </div>
     </div>
 </div>
     """, unsafe_allow_html=True)
-    
-    st.markdown("<h3 style='margin-bottom: 20px;'>Matches your Aesthetic Criteria</h3>", unsafe_allow_html=True)
-    recs = recommend(st.session_state.main_movie)
-    
-    cols = st.columns(5)
-    for idx, col in enumerate(cols):
-        with col:
-            st.image(recs[idx]['poster'], use_column_width=True)
-            if st.button(f"Analyze {recs[idx]['title']}", key=f"btn_{idx}"):
-                set_movie(recs[idx]['title'])
-                st.rerun()
 
 # --- PAGE 2: CLUSTERS ---
 elif app_mode == "Visual DNA Clusters":
